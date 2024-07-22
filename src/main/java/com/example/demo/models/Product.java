@@ -1,12 +1,24 @@
 package com.example.demo.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="products")
 public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long product_id;
     private String name;
     private String colour;
     private int size;
     private String type;
     private long price;
+
+    private String image;
 
     public Product(){
 
@@ -27,6 +39,7 @@ public class Product {
     public int getSize(){return size;}
     public String getType(){return type;}
     public long getPrice(){return price;}
+    public String getImage(){return image;}
 
     // setters
     public void setName(String name){this.name = name;}
@@ -34,6 +47,7 @@ public class Product {
     public void setSize(int size){this.size = size;}
     public void setType(String type){this.type = type;}
     public void setPrice(long price){this.price = price;}
+    public void setImage(String image){this.image = image;}
 
 
 

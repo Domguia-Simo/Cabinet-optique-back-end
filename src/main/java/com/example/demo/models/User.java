@@ -1,6 +1,18 @@
 package com.example.demo.models;
 
-public abstract class AbstractUser {
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+
+@Entity
+@Table(name = "users")
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
     protected String name;
     protected String email;
@@ -8,12 +20,12 @@ public abstract class AbstractUser {
     protected String phone_number;
 
     // Default constructor
-    public AbstractUser(){
+    public User(){
 
     }
 
     // Completely parametised constructor
-    public AbstractUser(String name,String email ,String password ,String phone_number){
+    public User(String name,String email ,String password ,String phone_number){
         this.name = name;
         this.email = email;
         this.password = password;
@@ -21,21 +33,21 @@ public abstract class AbstractUser {
     }
 
     // Partially parametised constructor
-    public AbstractUser(String name,String email ,String phone_number){
+    public User(String name,String email ,String phone_number){
         this.name = name;
         this.email = email;
         this.phone_number = phone_number;
     }
 
     // Getters
-    public long getid(){return id;}
+    public long getId(){return id;}
     public String getName(){return name;}
     public String getEmail(){return email;}
     public String getPassword(){return password;}
     public String getPhoneNumber(){return phone_number;}
 
     // Setters
-    public void setid(long id){this.id = id;}
+    public void setId(long id){this.id = id;}
     public void setName(String name){this.name = name;}
     public void setEmail(String email){this.email = email;}
     public void setPassword(String password){this.password = password;}

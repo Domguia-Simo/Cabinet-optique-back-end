@@ -1,6 +1,6 @@
 package com.example.demo.models;
 
-public class Manager extends AbstractUser {
+public class Manager extends User {
     
     public Manager(){
         super();

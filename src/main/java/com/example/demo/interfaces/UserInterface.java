@@ -2,14 +2,18 @@ package com.example.demo.interfaces;
 
 import java.util.List;
 
+
+// import org.springframework.stereotype.Service;
+
 import com.example.demo.models.Client;
+import com.example.demo.models.User;
 
-public interface UserServices {
+public interface UserInterface {
 
-    public void login();
-    public void register();
+    public String login(String email ,String password);
+    public void register(User user);
 
-    public List<Client> getClients();
+    public List<User> getClients();
     public void updateClient();
     public void deleteClient();
 
