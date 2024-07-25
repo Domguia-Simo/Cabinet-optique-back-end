@@ -3,6 +3,8 @@ package com.example.demo.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.plaf.synth.SynthEditorPaneUI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,13 +47,24 @@ public class ProductServiceImp implements ProductInterface {
 
     @Override
     public Boolean saveImage(String fileName ,Long id){
+
+        System.out.println(fileName);
         
         Optional<Product> p = productRepository.findById(id);
         System.out.println(p.get().getName());
-
+        
         if(p.isPresent()){
+            System.out.println("the products is present");
             Product updatedP = p.get();
-            updatedP.setImage(fileName);
+            if(updatedP.getImage() != null){
+                String oldImages = updatedP.getImage();
+                oldImages = oldImages +"*"+fileName;
+                updatedP.setImage(oldImages);
+                System.out.println("the list of images already existing"+updatedP.getImage());
+            }else{
+                updatedP.setImage(fileName);
+                System.out.println("The list of images is empty");
+            }
             productRepository.save(updatedP);
             return true;
         }

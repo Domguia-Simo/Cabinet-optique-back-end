@@ -2,10 +2,13 @@ package com.example.demo.controllers;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.demo.models.Product;
 import com.example.demo.services.ProductServiceImp;
 
+@CrossOrigin(origins ="*")
 @RestController
 @RequestMapping("/product")
 public class ProductController {
@@ -53,21 +57,27 @@ public class ProductController {
     }
 
     @PostMapping("/upload-product-image/{id}")
-    public ResponseEntity<Object> uploadProductImage(@PathVariable("id") Long id ,@RequestParam("image") MultipartFile file) throws IllegalStateException, IOException{
-        if(!file.isEmpty()){
-            String dir = System.getProperty("user.dir");
-            file.transferTo(new File(dir+"/src/main/resources/static" ,file.getOriginalFilename()));
-            // System.out.println(file.getOriginalFilename());
-            Boolean test = productService.saveImage(file.getOriginalFilename(), id);  
-            if(test){
-                return ResponseEntity.status(200).body("file uploaded correctly");
-            }else{
-                return ResponseEntity.status(400).body(Map.of("error" ,"Please select a file"));
-            }
+    public ResponseEntity<Object> uploadProductImage(@PathVariable("id") Long id ,@RequestParam("image") List<MultipartFile> files) throws IllegalStateException, IOException{
+        List<String> images =  new ArrayList<String>();
+        String dir = System.getProperty("user.dir");
 
+        if(!files.isEmpty()){
+            for(MultipartFile file:files){
+                if(!file.isEmpty()){
+                    images.add(file.getOriginalFilename());
+                }else{
+                    return ResponseEntity.status(400).body(Map.of("error" ,"Please select a file"));
+                }
+            }
+            for(MultipartFile file:files){
+                file.transferTo(new File(dir+"/src/main/resources/static" ,file.getOriginalFilename()));
+                Boolean test = productService.saveImage(file.getOriginalFilename(), id);  
+            }
         }else{
             return ResponseEntity.status(400).body(Map.of("error" ,"Please select a file"));
+            
         }
+        return ResponseEntity.status(200).body(Map.of("msg" ,"file save correctly"));
 
     }
 
