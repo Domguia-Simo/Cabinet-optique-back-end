@@ -31,10 +31,17 @@ public class UserController {
     // Client/user registration
     @PostMapping("/register-user")
     public ResponseEntity<Object> registerUser(@RequestBody User user){
+        if(!user.getEmail().isEmpty() || !user.getName().isEmpty() || !user.getPassword().isEmpty() || !user.getPhoneNumber().isEmpty() ){
+            System.out.println(user.getEmail());
+            System.out.println(user.getName());
+            System.out.println(user.getPhoneNumber());
+            System.out.println(user.getPassword());
 
-        userServices.register(user);
-
-        return ResponseEntity.status(200).body("User saved correctly");
+            userServices.register(user);
+            return ResponseEntity.status(200).body("User saved correctly");
+        }else{
+            return ResponseEntity.status(400).body("Please fill the entire form");
+        }
     }
 
     // Function to authenticate a user

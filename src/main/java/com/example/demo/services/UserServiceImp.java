@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.interfaces.UserInterface;
@@ -18,20 +19,22 @@ public class UserServiceImp implements UserInterface{
     @Autowired
     private UserRepository userRepository;
 
+//    @Autowired
+    private final BCryptPasswordEncoder bcrypt;
+    public UserServiceImp() {
+        bcrypt = new BCryptPasswordEncoder();
+    }
+
+
     @Override
     public String login(String email ,String password){
         Optional<User> Op = userRepository.findByEmail(email);
-        // System.out.print(Op.isEmpty() ? "it is empty":"It is not empty");
         if(Op.isPresent()){
             User u = Op.get();
-            // System.out.print(u.getPhoneNumber());
-            // System.out.print(u.getEmail());
-            // System.out.print(u.getPassword());
-            // System.out.print(u.getName());
-            // System.out.print(u.getId());
-            
-            if(u.getPassword().equals(password)){
-                return "Login successfull";
+            System.out.println(u.getPassword());
+                boolean test = bcrypt.matches(password ,u.getPassword());
+            if(test){
+                return "Login successfull id "+u.getId();
             }else{
                 return "Invalid password";
             }
@@ -44,7 +47,11 @@ public class UserServiceImp implements UserInterface{
     
     @Override
     public void register(User user){
-        
+
+//        String hashPassword = new BCryptPasswordEncoder().encode(user.getPassword());
+        String hashPassword = bcrypt.encode(user.getPassword());
+        user.setPassword(hashPassword);
+
         userRepository.save(user);
     }
 
