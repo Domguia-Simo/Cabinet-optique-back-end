@@ -52,9 +52,12 @@ public class UserController {
         System.out.println(data.get("password"));
         System.out.println(data.get("email"));
 
-        String response = userServices.login(email ,password);
-
-        return ResponseEntity.status(200).body(response);
+        Map<String ,String> response = userServices.login(email ,password);
+        if(response.get("success") != null){
+            return ResponseEntity.status(200).body(response.get("success"));
+        }else{
+            return ResponseEntity.status(401).body(response.get("error"));
+        }
     }
 
 

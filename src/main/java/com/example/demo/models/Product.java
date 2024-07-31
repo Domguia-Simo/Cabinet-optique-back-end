@@ -2,11 +2,8 @@ package com.example.demo.models;
 
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name="products")
@@ -21,6 +18,10 @@ public class Product {
     private long price;
 
     private String image;
+
+    @OneToMany(mappedBy = "product")
+//    @JsonIgnore
+    private List<Order> orders;
 
     public Product(){
 

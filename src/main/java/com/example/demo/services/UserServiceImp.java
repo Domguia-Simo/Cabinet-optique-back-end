@@ -1,8 +1,11 @@
 package com.example.demo.services;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import com.example.demo.models.Product;
+import com.example.demo.repo.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,8 +21,8 @@ public class UserServiceImp implements UserInterface{
 
     @Autowired
     private UserRepository userRepository;
-
-//    @Autowired
+    @Autowired
+    private ProductRepository productRepository;
     private final BCryptPasswordEncoder bcrypt;
     public UserServiceImp() {
         bcrypt = new BCryptPasswordEncoder();
@@ -27,20 +30,20 @@ public class UserServiceImp implements UserInterface{
 
 
     @Override
-    public String login(String email ,String password){
+    public Map<String ,String> login(String email ,String password){
         Optional<User> Op = userRepository.findByEmail(email);
         if(Op.isPresent()){
             User u = Op.get();
             System.out.println(u.getPassword());
                 boolean test = bcrypt.matches(password ,u.getPassword());
             if(test){
-                return "Login successfull id "+u.getId();
+                return Map.of("success" ,"Login successfull id "+u.getId());
             }else{
-                return "Invalid password";
+                return  Map.of("error" ,"Invalid password") ;
             }
 
         }else{
-            return "Not existing email";
+            return Map.of("error" , "No existing email") ;
         }
     }
 
@@ -64,5 +67,6 @@ public class UserServiceImp implements UserInterface{
 
     @Override
     public void deleteClient(){}
+
     
 }
