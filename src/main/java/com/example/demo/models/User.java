@@ -19,10 +19,9 @@ public class User {
     protected String password;
     protected String phone_number;
 
-//    @JsonIgnore
 
-    @OneToMany(mappedBy = "user")
-    private List<Order> orders;
+//    @OneToMany(mappedBy = "user")
+//    private List<Order> orders;
 
     // Default constructor
     public User(){

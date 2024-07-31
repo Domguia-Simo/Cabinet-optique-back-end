@@ -41,7 +41,6 @@ public class UserServiceImp implements UserInterface{
             }else{
                 return  Map.of("error" ,"Invalid password") ;
             }
-
         }else{
             return Map.of("error" , "No existing email") ;
         }
@@ -60,7 +59,7 @@ public class UserServiceImp implements UserInterface{
 
 
     @Override
-    public List<User> getClients(){return List.of();}
+    public List<User> getClients(){return userRepository.findAll();}
 
     @Override
     public void updateClient(){}

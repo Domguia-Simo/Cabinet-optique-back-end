@@ -19,15 +19,23 @@ public class OrderController {
     public ResponseEntity<?> orderProduct(
             @PathVariable Long userId,
             @PathVariable Long productId,
-            @RequestBody Map<String ,Object> data){
+            @RequestBody Map<String ,?> data){
 
         System.out.println(data);
         Integer quantity = (Integer)data.get("quantity");
-        Date date = (Date) data.get("date");
+        String date = (String) data.get("date");
 
-        Map<String ,String> repsonse = orderServiceImp.orderProduct(userId ,productId ,quantity ,date);
-        return ResponseEntity.status(200).body("Order registered succesfully");
+        Map<String ,?> response = orderServiceImp.orderProduct(userId ,productId ,quantity ,date);
+        if(response.get("success") != null){
+            return ResponseEntity.status(200).body(response.get("success"));
+        }else{
+            return ResponseEntity.status(401).body(response.get("error"));
+        }
     }
 
+    @GetMapping("/get-order")
+    public ResponseEntity<?> getOrders(){
+        return ResponseEntity.status(200).body(orderServiceImp.getOrders());
+    }
 
 }

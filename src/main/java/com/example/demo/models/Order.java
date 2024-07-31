@@ -13,7 +13,7 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Date date;
+    private String date;
     private int quantity;
 
     @ManyToOne
@@ -26,21 +26,21 @@ public class Order {
 
     public Order(){}
 
-    public Order(Date date ,int quantity ){
+    public Order(String date ,int quantity ){
         this.date = date;
         this.quantity = quantity;
     }
 
 //    Setters
     public void setId(Long id){this.id = id;}
-    public void setDate(Date date){this.date = date;}
-    public void setQuantity(int quntity){this.quantity = quantity;}
-    public void setUser(User u){this.user = user;}
-    public void setProduct(Product p){this.product = product;}
+    public void setDate(String date){this.date = date;}
+    public void setQuantity(int quantity){this.quantity = quantity;}
+    public void setUser(User u){this.user = u;}
+    public void setProduct(Product p){this.product = p;}
 
 //    Getters
     public Long getId(){return this.id;}
-    public Date getDate(){return date;}
+    public String getDate(){return date;}
     public int getQuantity(){return quantity;}
     public User getUser(){return user;}
     public Product getProduct(){return product;}

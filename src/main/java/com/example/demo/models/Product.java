@@ -20,7 +20,6 @@ public class Product {
     private String image;
 
     @OneToMany(mappedBy = "product")
-//    @JsonIgnore
     private List<Order> orders;
 
     public Product(){

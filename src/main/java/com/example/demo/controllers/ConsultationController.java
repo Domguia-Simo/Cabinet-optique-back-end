@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.models.Consultation;
 import com.example.demo.services.ConsultationServiceImp;
 
+import java.util.Map;
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/consultation")
@@ -28,10 +30,18 @@ public class ConsultationController {
         return ResponseEntity.status(200).body(consultationService.getConsultations()) ;
     }
 
-    @PostMapping("/create-consultation")
-    public ResponseEntity<Object> createConsultation(@RequestBody Consultation consultation){
-        consultationService.createConsultaiton(consultation);
-        return ResponseEntity.status(200).body("consultation registered correctly");
+    @PostMapping("/create-consultation/{userId}")
+    public ResponseEntity<Object> createConsultation(@RequestBody Map<String ,?> data  ,@PathVariable("userId") Long userId){
+
+        String date = (String) data.get("date");
+        String status = (String) data.get("status");
+
+        Map<String ,?> response = consultationService.createConsultaiton(date ,status ,userId);
+        if(response.get("error") == null){
+            return ResponseEntity.status(200).body(response.get("success"));
+        }else{
+            return ResponseEntity.status(401).body(response.get("error"));
+        }
     }
 
     @DeleteMapping("/delete-consultation/{id}")
