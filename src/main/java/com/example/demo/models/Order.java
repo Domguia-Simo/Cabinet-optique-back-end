@@ -14,11 +14,11 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String date;
-    private int quantity;
+//    private int quantity;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+//    @ManyToOne
+//    @JoinColumn(name = "product_id")
+//    private Product product;
 
     @JoinColumn(name = "user_id")
     @ManyToOne
@@ -26,23 +26,22 @@ public class Order {
 
     public Order(){}
 
-    public Order(String date ,int quantity ){
+    public Order(String date ){
         this.date = date;
-        this.quantity = quantity;
     }
 
 //    Setters
     public void setId(Long id){this.id = id;}
     public void setDate(String date){this.date = date;}
-    public void setQuantity(int quantity){this.quantity = quantity;}
+//    public void setQuantity(int quantity){this.quantity = quantity;}
     public void setUser(User u){this.user = u;}
-    public void setProduct(Product p){this.product = p;}
+//    public void setProduct(Product p){this.product = p;}
 
 //    Getters
     public Long getId(){return this.id;}
     public String getDate(){return date;}
-    public int getQuantity(){return quantity;}
+//    public int getQuantity(){return quantity;}
     public User getUser(){return user;}
-    public Product getProduct(){return product;}
+//    public Product getProduct(){return product;}
 
 }

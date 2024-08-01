@@ -10,7 +10,7 @@ import jakarta.persistence.*;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long product_id;
+    private Long product_id;
     private String name;
     private String colour;
     private int size;
@@ -19,8 +19,8 @@ public class Product {
 
     private String image;
 
-    @OneToMany(mappedBy = "product")
-    private List<Order> orders;
+//    @OneToMany(mappedBy = "product")
+//    private List<Order> orders;
 
     public Product(){
 
