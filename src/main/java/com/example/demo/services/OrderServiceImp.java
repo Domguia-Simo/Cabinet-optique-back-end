@@ -74,8 +74,9 @@ public class OrderServiceImp implements OrderInterface {
     }
 
     @Override
-    public void deleteOrder(){
-
+    public void deleteOrder(Long orderId){
+        orderProductRepo.deleteByOrderId(orderId);
+        orderRepository.deleteById(orderId);
     }
 
     @Override
@@ -86,6 +87,11 @@ public class OrderServiceImp implements OrderInterface {
     @Override
     public List<Order> getUserOrders(Long id){
         return orderRepository.findUserOrder(id);
+    }
+
+    @Override
+    public List<OrderProduct> getOrderDetails(Long id){
+        return orderProductRepo.findOrderDetail(id);
     }
 
 }

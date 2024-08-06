@@ -3,6 +3,7 @@ package com.example.demo.controllers;
 import com.example.demo.models.Order;
 import com.example.demo.models.OrderProduct;
 import com.example.demo.services.OrderServiceImp;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/order")
+@CrossOrigin(origins = "*")
 public class OrderController {
 
     @Autowired
@@ -44,4 +46,16 @@ public class OrderController {
     public List<Order> getUserOrders(@PathVariable("userId") Long id){
         return orderServiceImp.getUserOrders(id);
     }
+
+    @GetMapping("/get-order-details/{orderId}")
+    public ResponseEntity<?> getOrderDetails(@PathVariable("orderId") Long orderId){
+        return ResponseEntity.status(200).body(orderServiceImp.getOrderDetails(orderId));
+    }
+
+    @DeleteMapping("/delete-order/{orderId}")
+    public ResponseEntity<?>  deleteOrder(@PathVariable("orderId") Long orderId){
+        orderServiceImp.deleteOrder(orderId);
+        return ResponseEntity.status(200).body("Order deleted successfully");
+    }
+
 }

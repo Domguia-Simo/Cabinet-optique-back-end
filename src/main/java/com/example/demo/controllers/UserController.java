@@ -1,12 +1,10 @@
 package com.example.demo.controllers;
 
 import java.util.Map;
+
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.models.Client;
 import com.example.demo.models.User;
@@ -14,6 +12,7 @@ import com.example.demo.services.UserServiceImp;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(origins = "*")
 public class UserController {
 
     // @Autowired
@@ -58,6 +57,11 @@ public class UserController {
         }else{
             return ResponseEntity.status(401).body(response.get("error"));
         }
+    }
+
+    @GetMapping("/get-summary")
+    public ResponseEntity<?> getSummary(){
+        return ResponseEntity.status(200).body(userServices.getSummary());
     }
 
 

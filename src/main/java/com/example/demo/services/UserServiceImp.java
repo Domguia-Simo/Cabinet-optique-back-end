@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.example.demo.models.Product;
+import com.example.demo.repo.ConsultationRepository;
+import com.example.demo.repo.OrderRepository;
 import com.example.demo.repo.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,6 +25,12 @@ public class UserServiceImp implements UserInterface{
     private UserRepository userRepository;
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
+    @Autowired
+    private ConsultationRepository consultationRepository;
+
     private final BCryptPasswordEncoder bcrypt;
     public UserServiceImp() {
         bcrypt = new BCryptPasswordEncoder();
@@ -67,5 +75,13 @@ public class UserServiceImp implements UserInterface{
     @Override
     public void deleteClient(){}
 
+    public Map<?,?> getSummary(){
+        long users = userRepository.count();
+        long products = productRepository.count();
+        long consultations = consultationRepository.count();
+        long orders = orderRepository.count();
+
+        return Map.of("users" ,users ,"products" ,products ,"consultations" ,consultations ,"orders",orders ,"messages" ,0);
+    }
     
 }
