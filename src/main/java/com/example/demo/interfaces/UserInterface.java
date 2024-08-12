@@ -11,7 +11,7 @@ import com.example.demo.models.User;
 
 public interface UserInterface {
 
-    public Map<String ,String> login(String email ,String password);
+    public Map<String ,?> login(String email ,String password);
     public void register(User user);
 
     public List<User> getClients();

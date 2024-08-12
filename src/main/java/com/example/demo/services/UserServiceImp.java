@@ -38,14 +38,14 @@ public class UserServiceImp implements UserInterface{
 
 
     @Override
-    public Map<String ,String> login(String email ,String password){
+    public Map<String ,?> login(String email ,String password){
         Optional<User> Op = userRepository.findByEmail(email);
         if(Op.isPresent()){
             User u = Op.get();
             System.out.println(u.getPassword());
                 boolean test = bcrypt.matches(password ,u.getPassword());
             if(test){
-                return Map.of("success" ,"Login successfull id "+u.getId());
+                return Map.of("success" ,u);
             }else{
                 return  Map.of("error" ,"Invalid password") ;
             }
