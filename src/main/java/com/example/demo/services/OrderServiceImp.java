@@ -84,6 +84,10 @@ public class OrderServiceImp implements OrderInterface {
         return orderRepository.findAll();
     }
 
+    public List<?> getMergeOrders(){
+        return orderRepository.findMergeOrder();
+    }
+
     @Override
     public List<Order> getUserOrders(Long id){
         return orderRepository.findUserOrder(id);

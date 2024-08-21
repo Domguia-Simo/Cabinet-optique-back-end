@@ -1,21 +1,17 @@
 package com.example.demo.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.example.demo.models.Product;
-import com.example.demo.repo.ConsultationRepository;
-import com.example.demo.repo.OrderRepository;
-import com.example.demo.repo.ProductRepository;
+import com.example.demo.models.*;
+import com.example.demo.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.interfaces.UserInterface;
-import com.example.demo.models.User;
-import com.example.demo.models.Client;
-import com.example.demo.repo.UserRepository;
 
 
 @Service
@@ -25,6 +21,9 @@ public class UserServiceImp implements UserInterface{
     private UserRepository userRepository;
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private OrderProductRepo orderProductRepo;
 
     @Autowired
     private OrderRepository orderRepository;
@@ -45,7 +44,26 @@ public class UserServiceImp implements UserInterface{
             System.out.println(u.getPassword());
                 boolean test = bcrypt.matches(password ,u.getPassword());
             if(test){
-                return Map.of("success" ,u);
+
+                List<Consultation> userConsultation = consultationRepository.findByUserId(u.getId());
+                userConsultation.forEach(consultation -> {
+//                    Consultation temp = consultation;
+//                    temp.setUser(null);
+//                    return temp;
+                    consultation.setUser(null);
+                });
+                List<Order> userOrder = orderRepository.findUserOrder(u.getId());
+//                List<List<OrderProduct>> userOrderProduct =new ArrayList<>();
+                List<Map<String ,?>> userOrderProduct =new ArrayList<>();
+
+                for(Order o:userOrder){
+                    List<OrderProduct> temp = orderProductRepo.findOrderDetail(o.getId());
+                    userOrderProduct.add(Map.of("date" ,o.getDate() ,"products" ,temp));
+                }
+                u.setPassword(null);
+
+//                List<Order>
+                return Map.of("success" ,  Map.of("user" ,u,"consultations" ,userConsultation ,"orders" ,userOrderProduct) );
             }else{
                 return  Map.of("error" ,"Invalid password") ;
             }

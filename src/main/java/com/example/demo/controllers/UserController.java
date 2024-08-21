@@ -3,12 +3,14 @@ package com.example.demo.controllers;
 import java.util.Map;
 
 import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.models.Client;
 import com.example.demo.models.User;
 import com.example.demo.services.UserServiceImp;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/user")
@@ -58,6 +60,20 @@ public class UserController {
             return ResponseEntity.status(401).body(response.get("error"));
         }
     }
+
+//    Function to update the various user information
+    @PutMapping("/update-user-info")
+    public ResponseEntity<?> updateUserInfo(@RequestBody User user){
+
+        return ResponseEntity.status(200).body("");
+    }
+
+//    Function to upload the user's picture
+    @PostMapping("/upload-user-picture")
+    public ResponseEntity<?> uploadUserPicture(@RequestParam("profile") MultipartFile file){
+        return new ResponseEntity<>("" , HttpStatus.OK);
+    }
+
 
     @GetMapping("/get-summary")
     public ResponseEntity<?> getSummary(){

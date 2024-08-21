@@ -13,4 +13,9 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
     @Query(value = "select * from orders where user_id=?1" ,nativeQuery = true)
     public List<Order> findUserOrder(Long id);
 
+//    Testing joins with other tables
+    @Query(value = "select * from orders inner join order_product on orders.id = order_product.order_id inner join products on products.product_id = order_product.product_id" ,nativeQuery = true)
+    public List<?> findMergeOrder();
+
+
 }

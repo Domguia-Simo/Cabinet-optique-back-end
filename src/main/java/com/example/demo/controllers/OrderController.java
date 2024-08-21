@@ -42,6 +42,11 @@ public class OrderController {
         return ResponseEntity.status(200).body(orderServiceImp.getOrders());
     }
 
+    @GetMapping("/get-merge-orders")
+    public ResponseEntity<?> geMergeOrders(){
+        return ResponseEntity.status(200).body(orderServiceImp.getMergeOrders());
+    }
+
     @GetMapping("/get-user-orders/{userId}")
     public List<Order> getUserOrders(@PathVariable("userId") Long id){
         return orderServiceImp.getUserOrders(id);
