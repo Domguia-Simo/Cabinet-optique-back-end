@@ -69,9 +69,12 @@ public class UserController {
     }
 
 //    Function to update the various user information
-    @PutMapping("/update-user-info")
-    public ResponseEntity<?> updateUserInfo(@RequestBody User user){
-        return ResponseEntity.status(200).body(userServices.updateClient(user));
+    @PutMapping("/update-profile")
+    public ResponseEntity<?> updateUserInfo(@RequestBody Map<?,?> user){
+        String name = (String) user.get("name");
+        String phoneNumber = (String) user.get("phoneNumber");
+        long id = (long) user.get("id");
+        return ResponseEntity.status(200).body(userServices.updateClient(name ,phoneNumber ,id));
     }
 
 //    Function to upload the user's picture

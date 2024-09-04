@@ -15,7 +15,7 @@ public interface UserInterface {
     public void register(User user);
 
     public List<User> getClients();
-    public User updateClient(User user);
+    public User updateClient(String name,String phoneNumber,long id);
     public void deleteClient();
 
 //     public Map<String ,String> orderProduct(Long userId , Long productId);

@@ -102,8 +102,16 @@ public class UserServiceImp implements UserInterface{
     public List<User> getClients(){  return userRepository.findAll();}
 
     @Override
-    public User updateClient(User user){
-        return userRepository.save(user);
+    public User updateClient(String name ,String phoneNumber , long id){
+        Optional<User> Ou = userRepository.findById(id);
+        if(Ou.isPresent()){
+            User u = Ou.get();
+            u.setName(name);
+            u.setPhoneNumber(phoneNumber);
+            return userRepository.save(u);
+        }else{
+            return null;
+        }
     }
 
     @Override

@@ -33,7 +33,7 @@ class ConsultationController{
         String status = (String) consultation.get("status");
         String date = ( String) consultation.get("date");
 //        long id = (long) consultation.get("userId");
-        return new ResponseEntity<>(consultationServiceImp.createConsultaiton(date ,status ,id) , HttpStatus.CREATED);
+        return new ResponseEntity(consultationServiceImp.createConsultaiton(date ,status ,id) , HttpStatus.CREATED);
     }
 
 
