@@ -1,64 +1,54 @@
 package com.example.demo.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.example.demo.models.Consultation;
 import com.example.demo.services.ConsultationServiceImp;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-@CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/consultation")
-public class ConsultationController {
-    
+@CrossOrigin(origins = "*")
+@RequestMapping(value = "/consultation")
+class ConsultationController{
+
     @Autowired
-    private ConsultationServiceImp consultationService;
+    ConsultationServiceImp consultationServiceImp;
 
     @GetMapping("/get-consultation")
-    public ResponseEntity<Object> getConsultation(){
-        return ResponseEntity.status(200).body(consultationService.getConsultations()) ;
+    public ResponseEntity<?> getConsultations(){
+        return ResponseEntity.status(200).body(consultationServiceImp.getConsultations());
     }
 
-    @PostMapping("/create-consultation/{userId}")
-    public ResponseEntity<Object> createConsultation(@RequestBody Map<String ,?> data  ,@PathVariable("userId") Long userId){
-
-        String date = (String) data.get("date");
-        String status = (String) data.get("status");
-
-        Map<String ,?> response = consultationService.createConsultaiton(date ,status ,userId);
-        if(response.get("error") == null){
-            return ResponseEntity.status(200).body(response.get("success"));
-        }else{
-            return ResponseEntity.status(401).body(response.get("error"));
-        }
+    @GetMapping("/get-user-consultations/{id}")
+    public ResponseEntity<?> getUserConsultations(@PathVariable("id") long id){
+        return ResponseEntity.status(200).body(consultationServiceImp.getUserConsultations(id));
     }
+
+    @PostMapping("/create-consultation/{id}")
+    public ResponseEntity<?> createConsultation(@RequestBody Map<String ,?> consultation ,@PathVariable("id") long id){
+        String status = (String) consultation.get("status");
+        String date = ( String) consultation.get("date");
+//        long id = (long) consultation.get("userId");
+        return new ResponseEntity<>(consultationServiceImp.createConsultaiton(date ,status ,id) , HttpStatus.CREATED);
+    }
+
 
     @DeleteMapping("/delete-consultation/{id}")
-    public ResponseEntity<Object> deleteConsultation(@PathVariable("id") Long id){
-        consultationService.deleteConsultation(id);
-        return ResponseEntity.status(200).body("Consultation deleted corrctly") ;
+    public ResponseEntity<?> deleteConsultation(@PathVariable long id){
+        consultationServiceImp.deleteConsultation(id);
+        return new ResponseEntity<>("Consultation deleted correctly",HttpStatus.ACCEPTED);
     }
+
 
     @PutMapping("/update-consultation")
-    public ResponseEntity<Object> updateConsultation(@RequestBody Consultation consultation){
-        System.out.println(consultation.getStatus());
-        System.out.println(consultation.getDate());
-        System.out.println(consultation.getId());
-
-
-        consultationService.updateConsultation(consultation);
-        return ResponseEntity.status(200).body("consultation updated correctly") ;
+    public ResponseEntity<?> updateConsultation(@RequestBody Consultation consultation){
+        consultationServiceImp.updateConsultation(consultation);
+        return new ResponseEntity<>("consultation updated correctly",HttpStatus.OK);
     }
+
 
 }

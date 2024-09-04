@@ -26,6 +26,10 @@ public class ConsultationServiceImp implements ConsultationInterface {
     public List<Consultation> getConsultations(){
         return consultationRepository.findAll(); 
     }
+
+    public List<Consultation> getUserConsultations(long userId){
+        return consultationRepository.findByUserId(userId);
+    }
     
     @Override
     public void deleteConsultation(Long id){

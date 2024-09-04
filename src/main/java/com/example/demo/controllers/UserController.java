@@ -2,7 +2,10 @@ package com.example.demo.controllers;
 
 import java.util.Map;
 
+import com.example.demo.config.JWTUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.coyote.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 @CrossOrigin(origins = "*")
 public class UserController {
 
-    // @Autowired
+    @Autowired
+    private HttpServletRequest request;
+
     private final UserServiceImp userServices;
     public UserController(UserServiceImp service){
         this.userServices = service;
@@ -25,7 +30,8 @@ public class UserController {
 
     // To get the list of users/clients
     @GetMapping("/get-users")
-    public ResponseEntity<Object> getUser(){
+    public ResponseEntity<Object> getUser(@RequestAttribute String token ){
+        System.out.println(token);
         return ResponseEntity.status(200).body(userServices.getClients());
     }
 
@@ -55,6 +61,7 @@ public class UserController {
 
         Map<String ,?> response = userServices.login(email ,password);
         if(response.get("success") != null){
+
             return ResponseEntity.status(200).body(response.get("success"));
         }else{
             return ResponseEntity.status(401).body(response.get("error"));
@@ -64,8 +71,7 @@ public class UserController {
 //    Function to update the various user information
     @PutMapping("/update-user-info")
     public ResponseEntity<?> updateUserInfo(@RequestBody User user){
-
-        return ResponseEntity.status(200).body("");
+        return ResponseEntity.status(200).body(userServices.updateClient(user));
     }
 
 //    Function to upload the user's picture

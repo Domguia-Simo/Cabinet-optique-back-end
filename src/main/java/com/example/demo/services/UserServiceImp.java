@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.example.demo.config.JWTUtils;
 import com.example.demo.models.*;
 import com.example.demo.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ import com.example.demo.interfaces.UserInterface;
 
 @Service
 public class UserServiceImp implements UserInterface{
+
+    @Autowired
+    private JWTUtils jwtUtils;
 
     @Autowired
     private UserRepository userRepository;
@@ -62,8 +66,18 @@ public class UserServiceImp implements UserInterface{
                 }
                 u.setPassword(null);
 
+                String token = jwtUtils.generateToken(u);
+
 //                List<Order>
-                return Map.of("success" ,  Map.of("user" ,u,"consultations" ,userConsultation ,"orders" ,userOrderProduct) );
+                return Map.of(
+                        "success" ,
+                        Map.of(
+                                "token" ,token,
+                            "user" ,u,
+                            "consultations" ,userConsultation ,
+                            "orders" ,userOrderProduct
+                        )
+                );
             }else{
                 return  Map.of("error" ,"Invalid password") ;
             }
@@ -85,10 +99,12 @@ public class UserServiceImp implements UserInterface{
 
 
     @Override
-    public List<User> getClients(){return userRepository.findAll();}
+    public List<User> getClients(){  return userRepository.findAll();}
 
     @Override
-    public void updateClient(){}
+    public User updateClient(User user){
+        return userRepository.save(user);
+    }
 
     @Override
     public void deleteClient(){}
