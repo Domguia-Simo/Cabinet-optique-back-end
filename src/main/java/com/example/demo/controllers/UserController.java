@@ -72,8 +72,11 @@ public class UserController {
     @PutMapping("/update-profile")
     public ResponseEntity<?> updateUserInfo(@RequestBody Map<?,?> user){
         String name = (String) user.get("name");
-        String phoneNumber = (String) user.get("phoneNumber");
-        long id = (long) user.get("id");
+        String phoneNumber = (String ) user.get("phoneNumber");
+        int id = (int) user.get("id");
+
+        System.out.println(name + " " + phoneNumber+" "+id);
+
         return ResponseEntity.status(200).body(userServices.updateClient(name ,phoneNumber ,id));
     }
 
