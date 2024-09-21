@@ -17,5 +17,8 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
     @Query(value = "select * from orders inner join order_product on orders.id = order_product.order_id inner join products on products.product_id = order_product.product_id" ,nativeQuery = true)
     public List<?> findMergeOrder();
 
+//Query to get most active user based on orders
+    @Query(value = "select user_id from orders group by user_id order by count(*) desc limit 3" ,nativeQuery = true)
+    public List<?> findActiveUserByOrder();
 
 }

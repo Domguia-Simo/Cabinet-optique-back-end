@@ -48,7 +48,7 @@ public class OrderController {
     }
 
     @GetMapping("/get-user-orders/{userId}")
-    public List<Order> getUserOrders(@PathVariable("userId") Long id){
+    public List<Map<String ,?>> getUserOrders(@PathVariable("userId") Long id){
         return orderServiceImp.getUserOrders(id);
     }
 

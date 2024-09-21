@@ -12,10 +12,7 @@ import com.example.demo.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class OrderServiceImp implements OrderInterface {
@@ -89,8 +86,19 @@ public class OrderServiceImp implements OrderInterface {
     }
 
     @Override
-    public List<Order> getUserOrders(Long id){
-        return orderRepository.findUserOrder(id);
+    public List<Map<String ,?>> getUserOrders(Long id){
+//        return orderRepository.findUserOrder(id);
+
+        List<Order> userOrder = orderRepository.findUserOrder(id);
+        List<Map<String ,?>> userOrderProduct =new ArrayList<>();
+
+        for(Order o:userOrder){
+            List<OrderProduct> temp = orderProductRepo.findOrderDetail(o.getId());
+            userOrderProduct.add(Map.of("date" ,o.getDate() ,"products" ,temp));
+        }
+
+        return userOrderProduct;
+
     }
 
     @Override
