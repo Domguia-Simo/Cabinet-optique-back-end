@@ -50,9 +50,9 @@ public class ProductController {
         return ResponseEntity.status(200).body("Product deleted correctly");
     }
 
-    @PutMapping("/update-product")
-    public ResponseEntity<Object> updateProduct(@RequestBody Product product){
-        productService.updateProduct(product);
+    @PutMapping("/update-product/{id}")
+    public ResponseEntity<Object> updateProduct(@PathVariable("id") long id ,@RequestBody Product product){
+        productService.updateProduct(product ,id);
         return ResponseEntity.status(200).body("Product updated succesully");
     }
 

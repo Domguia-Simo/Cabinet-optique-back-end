@@ -31,8 +31,22 @@ public class ProductServiceImp implements ProductInterface {
     }
     
     @Override
-    public void updateProduct(Product product){
-        productRepository.save(product);
+    public void updateProduct(Product product ,long id){
+        System.out.println(id);
+//        return;
+        Optional<Product> Op = productRepository.findById(id);
+        if(Op.isPresent()){
+            Product p = Op.get();
+            p.setImage(product.getImage());
+            p.setColour(product.getColour());
+            p.setName(product.getName());
+            p.setSize(product.getSize());
+            p.setType(product.getType());
+            p.setPrice(product.getPrice());
+
+            productRepository.save(p);
+
+        }
     }
     
     @Override
